@@ -16,14 +16,14 @@ public interface AuthStoreInterface {
      * @param id user id
      * @return User
      */
-    public User get(int id) throws UnknownUserException, StorageException, RoleException, AuthException;
+    public User get(int id) throws UnknownUserException, StorageException, AuthException;
 
     /**
      * Returns user by email
      * @param email Email
      * @return User
      */
-    public User get(String email) throws UnknownUserException, StorageException, RoleException, AuthException;
+    public User get(String email) throws UnknownUserException, StorageException, AuthException;
 
     /**
      * Returns user by email and password - login
@@ -31,7 +31,7 @@ public interface AuthStoreInterface {
      * @param password unhashed password
      * @return User
      */
-    public User get(String email, String password) throws UnknownUserException, StorageException, RoleException, AuthException;
+    public User get(String email, String password) throws UnknownUserException, StorageException, AuthException;
 
     ////////////////////////////////////////////////////
 
@@ -56,7 +56,7 @@ public interface AuthStoreInterface {
      * @param user User to save
      * @return is user saved?
      */
-    public boolean save(User user);
+    public boolean save(User user) throws StorageException;
 
     /**
      * Creates User in storage

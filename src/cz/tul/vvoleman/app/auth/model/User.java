@@ -55,6 +55,9 @@ public class User {
     public boolean isEnabled() {
         return isEnabled;
     }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
     public Role getRole() {
         return role;
     }

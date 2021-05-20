@@ -1,17 +1,13 @@
 package cz.tul.vvoleman.app.address;
 
+import cz.tul.vvoleman.io.Database;
+import cz.tul.vvoleman.resource.Datastore;
+
 import java.sql.*;
 
 public class AddressStore {
 
     //TODO: Cache mezi databází a aplikací
-
-    private static final String dbHostname = "localhost";
-    private static final int dbPort = 3306;
-    private static final String dbName = "adresy";
-    private static final String dbUsername = "root";
-    private static final String dbPassword = "";
-    private static final String dbConnector = "mariadb";
 
     private Connection db = null;
     private static AddressStore instance;
@@ -21,20 +17,7 @@ public class AddressStore {
      * @throws SQLException when connection can't be established
      */
     private AddressStore() throws SQLException {
-        setupConnection();
-    }
-
-    /**
-     * Setups connection with DB
-     * @throws SQLException when connection can't be established
-     */
-    private void setupConnection() throws SQLException {
-        try {
-            String link = String.format("jdbc:%s://%s:%d/%s?user=%s&password=%s", dbConnector, dbHostname, dbPort, dbName, dbUsername, dbPassword);
-            db = DriverManager.getConnection(link);
-        }catch (SQLException e){
-            throw new SQLException("Couldn't connect to database");
-        }
+        db = Database.getConn(Datastore.getAddresses());
     }
 
     /**

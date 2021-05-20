@@ -144,7 +144,7 @@ public class FileAuthStorage implements AuthStoreInterface {
         try {
             TextFileWriter.writeToFile(f,containerToLine(uc));
 
-            return initializeUser(uc);
+            return Auth.initializeUser(uc);
         } catch (IOException | AuthException e) {
             throw new StorageException("Unable to save new user!");
         }
@@ -196,27 +196,6 @@ public class FileAuthStorage implements AuthStoreInterface {
                     uc.address.getId(),uc.createdAt.format(Datastore.getDtf()),
                     uc.enabled ? 1 : 0,uc.role.getName()
                 );
-    }
-
-    /**
-     * Returns initialized user created from UserContainer
-     * @param uc Data
-     * @return User
-     * @throws AuthException Unable to create user
-     */
-    private User initializeUser(UserContainer uc) throws AuthException {
-        if(!uc.isReady()) throw new AuthException("Unable to create user");
-
-        return new User(
-                uc.id,
-                uc.email,
-                uc.firstName,
-                uc.lastName,
-                uc.address,
-                uc.createdAt,
-                uc.enabled,
-                uc.role
-        );
     }
 
     /**

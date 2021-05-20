@@ -13,6 +13,14 @@ public class Datastore {
     private final static String authStorageFile = "users.csv";
     private final static String[] authColumns = {"id","email","password","firstname","lastname","address_id","created_at","enabled","role"};
 
+    private final static DBContainer addresses = new DBContainer(
+            "localhost",3306,"adresy","root","","mariadb"
+    );
+
+    private final static DBContainer datas = new DBContainer(
+            "localhost",3306,"alg2_semestral","root","","mariadb"
+    );
+
     public static DateTimeFormatter getDtf() {
         return dtf;
     }
@@ -39,5 +47,13 @@ public class Datastore {
 
     public static int getAuthColumnsSize(){
         return authColumns.length;
+    }
+
+    public static DBContainer getAddresses() {
+        return addresses;
+    }
+
+    public static DBContainer getDatas() {
+        return datas;
     }
 }

@@ -52,7 +52,7 @@ public class Auth {
         try{
             loggedIn = as.get(email,password);
             return true;
-        } catch (UnknownUserException | RoleException | AuthException e){
+        } catch (UnknownUserException | AuthException e){
             return false;
         }
     }
@@ -109,5 +109,26 @@ public class Auth {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Returns initialized user created from UserContainer
+     * @param uc Data
+     * @return User
+     * @throws AuthException Unable to create user
+     */
+    public static User initializeUser(UserContainer uc) throws AuthException {
+        if(!uc.isReady()) throw new AuthException("Unable to create user");
+
+        return new User(
+                uc.id,
+                uc.email,
+                uc.firstName,
+                uc.lastName,
+                uc.address,
+                uc.createdAt,
+                uc.enabled,
+                uc.role
+        );
     }
 }
