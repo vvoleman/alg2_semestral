@@ -1,9 +1,8 @@
 package cz.tul.vvoleman.app.address;
 
-import cz.tul.vvoleman.utils.exceptions.BadAddressFormatException;
+import cz.tul.vvoleman.utils.exceptions.address.BadAddressFormatException;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 
 public class AddressLibrary {
 

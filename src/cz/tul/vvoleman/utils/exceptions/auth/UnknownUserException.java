@@ -1,4 +1,4 @@
-package cz.tul.vvoleman.utils.exceptions;
+package cz.tul.vvoleman.utils.exceptions.auth;
 
 public class UnknownUserException extends Exception{
 

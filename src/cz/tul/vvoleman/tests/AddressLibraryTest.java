@@ -1,9 +1,8 @@
 package cz.tul.vvoleman.tests;
 
-import com.sun.istack.internal.NotNull;
 import cz.tul.vvoleman.app.address.Address;
 import cz.tul.vvoleman.app.address.AddressLibrary;
-import cz.tul.vvoleman.utils.exceptions.BadAddressFormatException;
+import cz.tul.vvoleman.utils.exceptions.address.BadAddressFormatException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
