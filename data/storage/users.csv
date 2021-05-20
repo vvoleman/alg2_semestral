@@ -1,0 +1,2 @@
+id,email,password,firstname,lastname,address_id,created_at,last_logged_in,enabled,role
+1,vojtavol@email.cz,fds,Vojtěch,Voleman,17901448,2021-05-10 16:20:00,2021-05-10 16:20:00,1,admin

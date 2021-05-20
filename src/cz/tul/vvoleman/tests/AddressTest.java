@@ -27,7 +27,6 @@ class AddressTest {
 
     @org.junit.jupiter.api.Test
     @DisplayName("Zobrazení celé adresy")
-    @Disabled
     void getFullAddress() {
         assertEquals("Kollárova 226/2, 400 03 Ústí nad Labem",
                 address.getFullAddress());
@@ -35,7 +34,6 @@ class AddressTest {
 
     @org.junit.jupiter.api.Test
     @DisplayName("Pěkná PSC")
-    @Disabled
     void getPrettyPsc() {
         assertEquals("400 03",
                 address.getPrettyPsc());
