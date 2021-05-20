@@ -1,4 +1,4 @@
-package cz.tul.vvoleman.tests;
+package cz.tul.vvoleman.test.address;
 
 import cz.tul.vvoleman.app.address.Address;
 import org.junit.jupiter.api.BeforeEach;

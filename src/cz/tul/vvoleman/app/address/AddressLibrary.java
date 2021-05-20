@@ -1,6 +1,6 @@
 package cz.tul.vvoleman.app.address;
 
-import cz.tul.vvoleman.utils.exceptions.address.BadAddressFormatException;
+import cz.tul.vvoleman.utils.exception.address.BadAddressFormatException;
 
 import java.sql.SQLException;
 

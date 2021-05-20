@@ -1,9 +1,11 @@
-package cz.tul.vvoleman.app.auth;
+package cz.tul.vvoleman.app.auth.storage;
 
-import cz.tul.vvoleman.app.User;
-import cz.tul.vvoleman.utils.exceptions.auth.RoleException;
-import cz.tul.vvoleman.utils.exceptions.storage.StorageException;
-import cz.tul.vvoleman.utils.exceptions.auth.UnknownUserException;
+import cz.tul.vvoleman.app.auth.model.User;
+import cz.tul.vvoleman.app.auth.model.UserContainer;
+import cz.tul.vvoleman.utils.exception.auth.AuthException;
+import cz.tul.vvoleman.utils.exception.auth.RoleException;
+import cz.tul.vvoleman.utils.exception.storage.StorageException;
+import cz.tul.vvoleman.utils.exception.auth.UnknownUserException;
 
 import java.util.List;
 
@@ -14,14 +16,14 @@ public interface AuthStoreInterface {
      * @param id user id
      * @return User
      */
-    public User get(int id) throws UnknownUserException, StorageException, RoleException;
+    public User get(int id) throws UnknownUserException, StorageException, RoleException, AuthException;
 
     /**
      * Returns user by email
      * @param email Email
      * @return User
      */
-    public User get(String email) throws UnknownUserException, StorageException, RoleException;
+    public User get(String email) throws UnknownUserException, StorageException, RoleException, AuthException;
 
     /**
      * Returns user by email and password - login
@@ -29,7 +31,7 @@ public interface AuthStoreInterface {
      * @param password unhashed password
      * @return User
      */
-    public User get(String email, String password) throws UnknownUserException, StorageException;
+    public User get(String email, String password) throws UnknownUserException, StorageException, RoleException, AuthException;
 
     ////////////////////////////////////////////////////
 
@@ -61,7 +63,7 @@ public interface AuthStoreInterface {
      * @param uc UserContainer
      * @return is user created?
      */
-    public boolean create(UserContainer uc) throws StorageException;
+    public User create(UserContainer uc) throws StorageException;
 
     ////////////////////////////////////////////////////
 

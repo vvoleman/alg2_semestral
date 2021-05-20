@@ -1,13 +1,16 @@
-package cz.tul.vvoleman.app.auth;
+package cz.tul.vvoleman.app.auth.storage;
 
-import cz.tul.vvoleman.app.User;
 import cz.tul.vvoleman.app.address.AddressLibrary;
-import cz.tul.vvoleman.resources.Datastore;
-import cz.tul.vvoleman.ui.io.TextFileReader;
-import cz.tul.vvoleman.utils.exceptions.auth.AuthException;
-import cz.tul.vvoleman.utils.exceptions.auth.RoleException;
-import cz.tul.vvoleman.utils.exceptions.storage.StorageException;
-import cz.tul.vvoleman.utils.exceptions.auth.UnknownUserException;
+import cz.tul.vvoleman.app.auth.*;
+import cz.tul.vvoleman.app.auth.model.Role;
+import cz.tul.vvoleman.app.auth.model.User;
+import cz.tul.vvoleman.app.auth.model.UserContainer;
+import cz.tul.vvoleman.resource.Datastore;
+import cz.tul.vvoleman.io.TextFileReader;
+import cz.tul.vvoleman.io.TextFileWriter;
+import cz.tul.vvoleman.utils.exception.auth.AuthException;
+import cz.tul.vvoleman.utils.exception.storage.StorageException;
+import cz.tul.vvoleman.utils.exception.auth.UnknownUserException;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class FileAuthStorage implements AuthStoreInterface{
+public class FileAuthStorage implements AuthStoreInterface {
 
     /**
      * File where all auth data are saved
@@ -31,7 +34,7 @@ public class FileAuthStorage implements AuthStoreInterface{
      * @return User
      */
     @Override
-    public User get(int id) throws UnknownUserException, StorageException, RoleException {
+    public User get(int id) throws UnknownUserException, StorageException, AuthException {
         //Získáme uživetele dle filteru
         List<String[]> data = extendedGet((p) -> p[0].equalsIgnoreCase(Integer.toString(id)),1);
 
@@ -52,7 +55,7 @@ public class FileAuthStorage implements AuthStoreInterface{
      * @return User
      */
     @Override
-    public User get(String email) throws UnknownUserException, StorageException, RoleException {
+    public User get(String email) throws UnknownUserException, StorageException, AuthException {
         //Získáme uživetele dle filteru
         List<String[]> data = extendedGet((p) -> p[1].equalsIgnoreCase(email),1);
 
@@ -73,8 +76,17 @@ public class FileAuthStorage implements AuthStoreInterface{
      * @return User
      */
     @Override
-    public User get(String email, String password) throws UnknownUserException {
-        return null;
+    public User get(String email, String password) throws UnknownUserException, StorageException, AuthException {
+        //Získáme uživetele dle filteru
+        List<String[]> data = extendedGet((p) -> p[1].equalsIgnoreCase(email) && p[2].equalsIgnoreCase(Auth.hash(password)),1);
+
+        //Pokud nám to nenašlo data
+        if(data.size() == 0){
+            throw new UnknownUserException("Unable to find user with email "+email+" and specified password");
+        }
+
+        //Vrátíme instanci uživatele
+        return initializeUser(data.get(0));
     }
 
     ////////////////////////////////////////////////////
@@ -112,6 +124,7 @@ public class FileAuthStorage implements AuthStoreInterface{
     @Override
     public boolean save(User user) {
         return false;
+        //TODO: Doimplementovat save
     }
 
     /**
@@ -121,15 +134,20 @@ public class FileAuthStorage implements AuthStoreInterface{
      * @return is user created?
      */
     @Override
-    public boolean create(UserContainer uc) throws StorageException {
+    public User create(UserContainer uc) throws StorageException {
         int newId = getLastID()+1;
         LocalDateTime ldt = LocalDateTime.now();
 
         uc.id = newId;
         uc.createdAt = ldt;
 
+        try {
+            TextFileWriter.writeToFile(f,containerToLine(uc));
 
-        return false;
+            return initializeUser(uc);
+        } catch (IOException | AuthException e) {
+            throw new StorageException("Unable to save new user!");
+        }
     }
 
     ////////////////////////////////////////////////////
@@ -142,7 +160,10 @@ public class FileAuthStorage implements AuthStoreInterface{
     @Override
     public boolean exists(String email){
         try {
-            List<String[]> data = extendedGet((p) -> p[1].equalsIgnoreCase(email), 1);
+            List<String[]> data = extendedGet((p) -> {
+                System.out.println(p.length);
+                return p[1].equalsIgnoreCase(email);
+                }, 1);
 
             return data.size() > 0;
         } catch (StorageException e){
@@ -167,8 +188,8 @@ public class FileAuthStorage implements AuthStoreInterface{
     }
 
     ////////////////////////////////////////////////////
-    public String containerToLine(UserContainer uc){
-        if(!uc.isReady()) return null;
+    public String containerToLine(UserContainer uc) throws AuthException {
+        if(!uc.isReady()) throw new AuthException("Unable to create user!");
 
         return String.format("%d,%s,%s,%s,%s,%d,%s,%d,%s",
                     uc.id,uc.email,uc.password,uc.firstName,uc.lastName,
@@ -203,9 +224,9 @@ public class FileAuthStorage implements AuthStoreInterface{
      * @param parts Data
      * @return User
      * @throws StorageException Bad format of storage
-     * @throws RoleException Invalid role
+     * @throws AuthException Invalid role
      */
-    private User initializeUser(String[] parts) throws StorageException, RoleException {
+    private User initializeUser(String[] parts) throws StorageException, AuthException {
         if(parts.length != Datastore.getAuthColumnsSize()){
             throw new StorageException("Bad format of storage!");
         }
@@ -229,7 +250,7 @@ public class FileAuthStorage implements AuthStoreInterface{
                     Role.getFromString(parts[8])
             );
         }catch (Exception e){
-            throw new RoleException("Invalid role");
+            throw new AuthException("Invalid role");
         }
     }
 

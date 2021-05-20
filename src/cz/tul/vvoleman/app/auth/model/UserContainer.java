@@ -1,4 +1,4 @@
-package cz.tul.vvoleman.app.auth;
+package cz.tul.vvoleman.app.auth.model;
 
 import cz.tul.vvoleman.app.address.Address;
 

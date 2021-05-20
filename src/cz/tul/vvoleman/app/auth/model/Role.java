@@ -1,22 +1,35 @@
-package cz.tul.vvoleman.app.auth;
+package cz.tul.vvoleman.app.auth.model;
 
-import cz.tul.vvoleman.utils.exceptions.auth.RoleException;
+import cz.tul.vvoleman.utils.exception.auth.RoleException;
 
 public enum Role {
 
+    //Enums
     Customer ("customer"),
     Admin ("admin");
 
+    //Property
     private String name;
 
+    //Constructor
     Role(String name){
         this.name = name;
     }
 
-    String getName(){
+    /**
+     * Returns String name of enum
+     * @return name
+     */
+    public String getName(){
         return name;
     }
 
+    /**
+     * Returns enum from string
+     * @param s string
+     * @return Role
+     * @throws RoleException role doesn't exists
+     */
     public static Role getFromString(String s) throws RoleException {
         s = s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase();
         try{

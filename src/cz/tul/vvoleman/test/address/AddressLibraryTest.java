@@ -1,8 +1,8 @@
-package cz.tul.vvoleman.tests;
+package cz.tul.vvoleman.test.address;
 
 import cz.tul.vvoleman.app.address.Address;
 import cz.tul.vvoleman.app.address.AddressLibrary;
-import cz.tul.vvoleman.utils.exceptions.address.BadAddressFormatException;
+import cz.tul.vvoleman.utils.exception.address.BadAddressFormatException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,7 @@
-package cz.tul.vvoleman.tests;
+package cz.tul.vvoleman.test.auth;
 
 import cz.tul.vvoleman.app.auth.Auth;
+import cz.tul.vvoleman.utils.exception.storage.StorageException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,5 +20,14 @@ class AuthTest {
                 "Hash"
         );
 
+    }
+
+    @Test
+    @DisplayName("Přihlášení")
+    void login() throws StorageException {
+        String email = "marco@polo.cz";
+        String password = "mojeheslo";
+
+        assertTrue(Auth.login(email,password),"Kontrola přihlášení");
     }
 }

@@ -1,7 +1,7 @@
-package cz.tul.vvoleman.tests;
+package cz.tul.vvoleman.test.io;
 
-import cz.tul.vvoleman.resources.Datastore;
-import cz.tul.vvoleman.ui.io.TextFileReader;
+import cz.tul.vvoleman.resource.Datastore;
+import cz.tul.vvoleman.io.TextFileReader;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

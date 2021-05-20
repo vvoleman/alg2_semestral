@@ -1,7 +1,6 @@
-package cz.tul.vvoleman.app;
+package cz.tul.vvoleman.app.auth.model;
 
 import cz.tul.vvoleman.app.address.Address;
-import cz.tul.vvoleman.app.auth.Role;
 
 import java.time.LocalDateTime;
 

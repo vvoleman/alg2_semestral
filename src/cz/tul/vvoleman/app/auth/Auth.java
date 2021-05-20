@@ -1,14 +1,18 @@
 package cz.tul.vvoleman.app.auth;
 
-import cz.tul.vvoleman.app.User;
-import cz.tul.vvoleman.utils.exceptions.auth.AuthException;
-import cz.tul.vvoleman.utils.exceptions.auth.EmailExistsException;
-import cz.tul.vvoleman.utils.exceptions.storage.StorageException;
+import cz.tul.vvoleman.app.auth.model.User;
+import cz.tul.vvoleman.app.auth.model.UserContainer;
+import cz.tul.vvoleman.app.auth.storage.AuthStoreInterface;
+import cz.tul.vvoleman.app.auth.storage.FileAuthStorage;
+import cz.tul.vvoleman.utils.exception.auth.AuthException;
+import cz.tul.vvoleman.utils.exception.auth.EmailExistsException;
+import cz.tul.vvoleman.utils.exception.auth.RoleException;
+import cz.tul.vvoleman.utils.exception.auth.UnknownUserException;
+import cz.tul.vvoleman.utils.exception.storage.StorageException;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 public class Auth {
 
@@ -16,7 +20,7 @@ public class Auth {
     private static User loggedIn;
 
     //Storage
-    private static AuthStoreInterface as = new FileAuthStorage();
+    private static final AuthStoreInterface as = new FileAuthStorage();
 
     /**
      * Is somebody logged in?
@@ -37,6 +41,30 @@ public class Auth {
         return null;
     }
 
+    /**
+     * Logs out a user
+     */
+    public static void logout(){
+        loggedIn = null;
+    }
+
+    public static boolean login(String email, String password) throws StorageException {
+        try{
+            loggedIn = as.get(email,password);
+            return true;
+        } catch (UnknownUserException | RoleException | AuthException e){
+            return false;
+        }
+    }
+
+    /**
+     * Registers new user
+     * @param uc User container
+     * @return true if successfuly registered
+     * @throws EmailExistsException Email is already taken
+     * @throws AuthException Unable to create new user
+     * @throws StorageException Problem with storage
+     */
     public static boolean register(UserContainer uc) throws EmailExistsException, AuthException, StorageException {
         //Is there anybody with this email?
         if(as.exists(uc.email)){
@@ -50,11 +78,13 @@ public class Auth {
             throw new AuthException("Unable to hash password");
         }
 
-        as.create(uc);
-
+        User u = as.create(uc);
+        if(u != null){
+            loggedIn = u;
+            return true;
+        }
         return false;
     }
-
 
     /**
      * Returns hashed password
@@ -80,6 +110,4 @@ public class Auth {
 
         return sb.toString();
     }
-
-
 }

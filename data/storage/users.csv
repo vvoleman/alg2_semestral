@@ -1,3 +1,2 @@
 id,email,password,firstname,lastname,address_id,created_at,enabled,role
-1,vojtavol@email.cz,fds,Vojtěch,Voleman,17901448,2021-05-10 16:20:00,1,admin
-2,vvoleman@email.cz,fdst,Vojtěch,Voleman,17901448,2021-05-10 16:20:00,1,admin
+1,marco@polo.cz,140dca485d2c5468512a509137f6c0bcb509a81b92a195fd85010473a11f0a247bd342016e10ce1dde7cea2a2dfab0468813ec7faf6f40eb7e5d613e574bf7cb,Marco,Polo,17901448,2021-05-20 21:30:58,1,customer

@@ -1,4 +1,4 @@
-package cz.tul.vvoleman.ui.io;
+package cz.tul.vvoleman.io;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -46,8 +46,8 @@ public class TextFileReader {
 
                 //Pokud je value null, tak to přiradíme
                 //Pokud se part rovná value, přiřadíme
-                if(filter.test(parts)){
-                    data.add(line.split(regexSeparator));
+                if(parts.length > 1 && filter.test(parts)){
+                    data.add(parts);
                 }
 
                 //Pokud list dosáhl požadovaného limitu

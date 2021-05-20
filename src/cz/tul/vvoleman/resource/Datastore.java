@@ -1,4 +1,4 @@
-package cz.tul.vvoleman.resources;
+package cz.tul.vvoleman.resource;
 
 import java.time.format.DateTimeFormatter;
 

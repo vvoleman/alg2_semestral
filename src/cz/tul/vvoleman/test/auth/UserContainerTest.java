@@ -1,9 +1,9 @@
-package cz.tul.vvoleman.tests;
+package cz.tul.vvoleman.test.auth;
 
 import cz.tul.vvoleman.app.address.AddressLibrary;
-import cz.tul.vvoleman.app.auth.Role;
-import cz.tul.vvoleman.app.auth.UserContainer;
-import cz.tul.vvoleman.utils.exceptions.address.BadAddressFormatException;
+import cz.tul.vvoleman.app.auth.model.Role;
+import cz.tul.vvoleman.app.auth.model.UserContainer;
+import cz.tul.vvoleman.utils.exception.address.BadAddressFormatException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

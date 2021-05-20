@@ -1,4 +1,4 @@
-package cz.tul.vvoleman.utils.exceptions.address;
+package cz.tul.vvoleman.utils.exception.address;
 
 public class BadAddressFormatException extends Exception{
 

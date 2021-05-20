@@ -1,4 +1,4 @@
-package cz.tul.vvoleman.utils.exceptions.storage;
+package cz.tul.vvoleman.utils.exception.storage;
 
 public class StorageException extends Exception{
 
