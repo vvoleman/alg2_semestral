@@ -98,6 +98,7 @@ public class DatabaseAuthStorage implements AuthStoreInterface{
         try{
             PreparedStatement ps = db.prepareStatement(query);
             ps.setString(1,email);
+            ps.setString(2,password);
 
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
@@ -175,19 +176,20 @@ public class DatabaseAuthStorage implements AuthStoreInterface{
      */
     @Override
     public User create(UserContainer uc) throws StorageException {
-        String query = "INSERT INTO users (email,first_name,last_name,address_id,created_at,role) VALUES " +
-                "(?,?,?,?,?,?)";
+        String query = "INSERT INTO users (email,password,first_name,last_name,address_id,created_at,role) VALUES " +
+                "(?,?,?,?,?,?,?)";
 
         try{
             uc.createdAt = LocalDateTime.now();
 
             PreparedStatement ps = db.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
             ps.setString(1,uc.email);
-            ps.setString(2,uc.firstName);
-            ps.setString(3,uc.lastName);
-            ps.setInt(4,uc.address.getId());
-            ps.setTimestamp(5,Timestamp.valueOf(uc.createdAt));
-            ps.setString(6,uc.role.getName());
+            ps.setString(2,uc.password);
+            ps.setString(3,uc.firstName);
+            ps.setString(4,uc.lastName);
+            ps.setInt(5,uc.address.getId());
+            ps.setTimestamp(6,Timestamp.valueOf(uc.createdAt));
+            ps.setString(7,uc.role.getName());
 
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
@@ -198,7 +200,7 @@ public class DatabaseAuthStorage implements AuthStoreInterface{
             //TODO: Udělej testy
             return Auth.initializeUser(uc);
         } catch(SQLException | AuthException e){
-            throw new StorageException("Unable to create new user!");
+            throw new StorageException("Unable to create new user! "+e.getMessage());
         }
     }
 
@@ -211,8 +213,18 @@ public class DatabaseAuthStorage implements AuthStoreInterface{
      * @return true if exists
      */
     @Override
-    public boolean exists(String email) {
-        return false;
+    public boolean exists(String email) throws StorageException {
+        String query = "SELECT 1 FROM users WHERE email = ?";
+        try{
+            PreparedStatement ps = db.prepareStatement(query);
+            ps.setString(1,email);
+
+            ResultSet rs = ps.executeQuery();
+
+            return rs.next();
+        } catch (SQLException e){
+            throw new StorageException("Unable to retrieve data!");
+        }
     }
 
     /**
@@ -222,14 +234,24 @@ public class DatabaseAuthStorage implements AuthStoreInterface{
      * @return true if exists
      */
     @Override
-    public boolean exists(int id) {
-        return false;
+    public boolean exists(int id) throws StorageException {
+        String query = "SELECT 1 FROM users WHERE id = ?";
+        try{
+            PreparedStatement ps = db.prepareStatement(query);
+            ps.setInt(1,id);
+
+            ResultSet rs = ps.executeQuery();
+
+            return rs.next();
+        } catch (SQLException e){
+            throw new StorageException("Unable to retrieve data!");
+        }
     }
 
     ////////////////////////////////////////////////////
 
     private String getQuery(){
-        return "SELECT id,email,password,first_name,last_name,address_id,created_at,enabled,role FROM users";
+        return "SELECT id,email,first_name,last_name,address_id,created_at,enabled,role FROM users";
     }
 
     private User getUserFromResult(ResultSet rs) throws SQLException, AuthException {

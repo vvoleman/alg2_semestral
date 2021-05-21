@@ -72,13 +72,13 @@ public interface AuthStoreInterface {
      * @param email Email
      * @return true if exists
      */
-    public boolean exists(String email);
+    public boolean exists(String email) throws StorageException;
 
     /**
      * Checks if there is any user with this id
      * @param id ID
      * @return true if exists
      */
-    public boolean exists(int id);
+    public boolean exists(int id) throws StorageException;
 
 }

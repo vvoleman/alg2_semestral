@@ -1,12 +1,12 @@
 package cz.tul.vvoleman;
 
+import cz.tul.vvoleman.io.Storage;
+
 import java.util.function.Predicate;
 
 public class Main {
 
     public static void main(String[] args) {
-        String[] data = {"1","vojtavol@email.cz","heslo123"};
-
-        Predicate<String[]> test = parts -> parts[0].equalsIgnoreCase("1");
+        Storage s = Storage.File;
     }
 }

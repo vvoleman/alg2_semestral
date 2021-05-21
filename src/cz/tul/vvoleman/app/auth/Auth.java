@@ -3,7 +3,9 @@ package cz.tul.vvoleman.app.auth;
 import cz.tul.vvoleman.app.auth.model.User;
 import cz.tul.vvoleman.app.auth.model.UserContainer;
 import cz.tul.vvoleman.app.auth.storage.AuthStoreInterface;
+import cz.tul.vvoleman.app.auth.storage.DatabaseAuthStorage;
 import cz.tul.vvoleman.app.auth.storage.FileAuthStorage;
+import cz.tul.vvoleman.resource.Datastore;
 import cz.tul.vvoleman.utils.exception.auth.AuthException;
 import cz.tul.vvoleman.utils.exception.auth.EmailExistsException;
 import cz.tul.vvoleman.utils.exception.auth.RoleException;
@@ -20,7 +22,26 @@ public class Auth {
     private static User loggedIn;
 
     //Storage
-    private static final AuthStoreInterface as = new FileAuthStorage();
+    private AuthStoreInterface as;
+
+    private static Auth instance;
+
+    private AuthStoreInterface getAuthStorage(){
+        return as;
+    }
+
+    private Auth() throws StorageException {
+        as = Datastore.getStorageContainer().authStore;
+    }
+
+    private static AuthStoreInterface getStorage() throws StorageException {
+        if(instance == null){
+            instance = new Auth();
+        }
+        return instance.getAuthStorage();
+    }
+
+    ///////////////////////////////////////////////
 
     /**
      * Is somebody logged in?
@@ -50,7 +71,7 @@ public class Auth {
 
     public static boolean login(String email, String password) throws StorageException {
         try{
-            loggedIn = as.get(email,password);
+            loggedIn = getStorage().get(email,password);
             return true;
         } catch (UnknownUserException | AuthException e){
             return false;
@@ -67,7 +88,7 @@ public class Auth {
      */
     public static boolean register(UserContainer uc) throws EmailExistsException, AuthException, StorageException {
         //Is there anybody with this email?
-        if(as.exists(uc.email)){
+        if(getStorage().exists(uc.email)){
             throw new EmailExistsException("User with this email already exists!");
         }
 
@@ -78,7 +99,7 @@ public class Auth {
             throw new AuthException("Unable to hash password");
         }
 
-        User u = as.create(uc);
+        User u = getStorage().create(uc);
         if(u != null){
             loggedIn = u;
             return true;
@@ -131,4 +152,6 @@ public class Auth {
                 uc.role
         );
     }
+
+
 }

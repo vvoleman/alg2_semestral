@@ -36,7 +36,7 @@ class FileAuthStorageTest {
     @Test
     @DisplayName("Existuje email?")
     @Disabled
-    void getByEmail() throws RoleException, UnknownUserException, StorageException, AuthException {
+    void getByEmail() throws UnknownUserException, StorageException, AuthException {
         assertEquals(1,fas.get("vojtavol@email.cz").getId(),"Uživatel s emailem vojtavol@email.cz");
     }
 
@@ -47,23 +47,6 @@ class FileAuthStorageTest {
 
         UserContainer uc = getUc();
         assertEquals(correct,fas.containerToLine(uc),"ContainerToLine");
-    }
-
-    @Test
-    @DisplayName("Vytvoření nového uživatele")
-    void create() throws StorageException, SQLException, BadAddressFormatException, EmailExistsException, AuthException {
-        UserContainer uc = new UserContainer();
-        uc.firstName = "Marco";
-        uc.lastName = "Polo";
-        uc.email = "marco@polo.cz";
-        uc.password = "mojeheslo";
-        uc.address = AddressLibrary.getAddressByInput("Kollárova 226/2, 40003");
-        uc.role = Role.Customer;
-
-        assertTrue(Auth.register(uc));
-        System.out.println("Je uživatel připojen? "+Auth.isLoggedIn());
-        Auth.logout();
-        System.out.println("Je uživatel připojen? "+Auth.isLoggedIn());
     }
 
     private UserContainer getUc() throws SQLException, BadAddressFormatException {
