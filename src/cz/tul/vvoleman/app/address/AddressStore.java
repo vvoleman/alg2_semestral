@@ -82,10 +82,11 @@ public class AddressStore {
      * @return query
      */
     private String getAddressQuery(){
-        return "SELECT d.kod as id, nazev_ulice as street_name, cislo_domu as house_number, " +
-                "cislo_orientacni as additional_number,co.psc as psc, ob.nazev as municipality_name, " +
-                "ok.nazev as district_name FROM domy d " +
-                "JOIN casti_obci co ON co.kod = d.kod_casti_obce JOIN obce ob ON ob.kod = co.kod_obce JOIN okresy ok ON ok.kod = ob.kod_okresu";
+        return "SELECT d.kod as id, nazev_ulice as street_name, cislo_domu as house_number,\n" +
+                "                cislo_orientacni as additional_number,co.psc as psc, ob.nazev as municipality_name,\n" +
+                "                ok.kod as district_id, ok.nazev as district_name, k.kod as region_id, k.nazev as region_name FROM domy d\n" +
+                "                JOIN casti_obci co ON co.kod = d.kod_casti_obce JOIN obce ob ON ob.kod = co.kod_obce JOIN okresy ok ON ok.kod = ob.kod_okresu\n" +
+                "                JOIN kraje k ON k.kod = ok.kod_kraje";
     }
 
     /**
@@ -102,8 +103,10 @@ public class AddressStore {
                 rs.getInt("additional_number"),
                 rs.getInt("psc"),
                 rs.getString("municipality_name"),
-                rs.getString("district_name")
-        );
+                rs.getInt("district_id"),
+                rs.getString("district_name"),
+                rs.getInt("region_id"),
+                rs.getString("district_name"));
     }
 
     /* -- Static */

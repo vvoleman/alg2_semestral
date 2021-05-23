@@ -12,7 +12,7 @@ public abstract class Section {
         this.sc = sc;
     }
 
-    public abstract void run();
+    public abstract boolean run();
 
     protected void drawUnderscore(String s){
         System.out.println(s);

@@ -2,30 +2,30 @@ package cz.tul.vvoleman.app.post;
 
 import cz.tul.vvoleman.app.address.Address;
 
-public class Warehouse {
+import java.util.Map;
 
-    /**
-     * Warehouse info
-     */
-    private final String name;
-    private final int id;
-    private final Address address;
+public class Warehouse{
 
     /**
      * Warehouse content
      */
-    private MailStorage mailStorage;
+    protected MailStorage mailStorage;
 
-    public Warehouse(String name, int id, Address address){
-        this.name = name;
-        this.id = id;
-        this.address = address;
-
+    public Warehouse(){
         mailStorage = new MailStorage();
     }
 
     public void incomingTransport(MailTransport mailTransport){
         mailStorage.add(mailTransport);
+    }
+
+    /**
+     * Processes outgoing transport
+     *
+     * @param target PostalInterface
+     */
+    public void outgoingTransport(PostOffice target) {
+        target.incomingTransport(new MailTransport(mailStorage.filterByPsc(target.getPsc(),true,true)));
     }
 
 }

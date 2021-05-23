@@ -56,7 +56,6 @@ public class AddressLibrary {
         }catch (SQLException e){
             throw e;
         }catch (Exception e){
-            System.out.println(e);
             throw new BadAddressFormatException("Incorrect format of address - "+input);
         }
     }

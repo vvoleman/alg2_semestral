@@ -1,15 +1,16 @@
 package cz.tul.vvoleman.ui.section;
 
+import cz.tul.vvoleman.app.auth.Auth;
 import cz.tul.vvoleman.ui.Menu;
 import cz.tul.vvoleman.ui.Section;
 
 import java.util.Scanner;
 
-public class MenuLogout extends Section {
+public class MenuAdmin extends Section{
 
     private Menu menu;
 
-    public MenuLogout(Scanner sc) {
+    public MenuAdmin(Scanner sc) {
         super(sc);
 
         initMenu();
@@ -18,11 +19,10 @@ public class MenuLogout extends Section {
     private void initMenu() {
         menu = new Menu(new String[]{
                 "Sledování zásilky",
-                "Přihlášení",
-                "Registrace",
-                "O aplikaci",
-                "Ukončit"
-        }
+                "Přijmutí zásilky",
+                "Přijmutí transportu",
+                "Odhlásit"
+            }
         );
     }
 
@@ -37,18 +37,13 @@ public class MenuLogout extends Section {
             case 2:
                 s = new Login(sc);
                 break;
-            case 3:
-                s = new Register(sc);
-                break;
-            case 4:
-                s = new AboutApp(sc);
-                break;
             case 5:
-                System.out.println("Nashledanou!");
-                return false;
+                Auth.logout();
+                return true;
         }
 
         s.run();
         return true;
     }
+
 }

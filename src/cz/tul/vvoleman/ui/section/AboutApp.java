@@ -13,10 +13,12 @@ public class AboutApp extends Section {
     }
 
     @Override
-    public void run() {
+    public boolean run() {
         drawUnderscore("O aplikaci");
         System.out.println("Aplikace slouží k předregistraci a pohybu zásilek");
         System.out.println("Vytvořeno v rámci kurzu ALG2");
         System.out.println("Autor: Vojtěch Voleman, 2021");
+
+        return true;
     }
 }

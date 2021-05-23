@@ -4,7 +4,6 @@ import cz.tul.vvoleman.app.auth.Auth;
 import cz.tul.vvoleman.ui.Section;
 import cz.tul.vvoleman.utils.exception.storage.StorageException;
 
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Login extends Section {
@@ -14,10 +13,10 @@ public class Login extends Section {
     }
 
     @Override
-    public void run() {
+    public boolean run() {
         if(Auth.isLoggedIn()){
             System.out.println("Již jste přihlášeni!");
-            return;
+            return true;
         }
 
 
@@ -46,16 +45,17 @@ public class Login extends Section {
                     }while(!temp);
 
                     if(shouldEnd.equalsIgnoreCase("n")){
-                        return;
+                        return true;
                     }
                 };
 
             }while(!isOk);
         }catch (StorageException e){
             System.out.println("Omlouváme se, ale nelze ověřit údaje. Zkuste to prosím později!");
-            return;
+            return true;
         }
 
         new AboutApp(sc).run();
+        return true;
     }
 }

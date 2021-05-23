@@ -16,7 +16,7 @@ class AddressLibraryTest {
     @DisplayName("Získání adresy ze vstupu")
     void getAddressByInput() throws BadAddressFormatException, SQLException {
         String[] addresses = {
-                "Kollárova 226/2, 40003 Ústí nad Labem",
+                "Kollárova 226/2, 40003",
                 "Krupá 114, 27009 Rakovník"
         };
         int[] ids = {17901448,8553203};

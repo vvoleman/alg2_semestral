@@ -20,8 +20,16 @@ public class MailStorage {
         mails.addAll(mailTransport.getMails());
     }
 
-    public List<Mail> filterByPsc(int psc, boolean remove){
-        return filter((m) -> m.getPSC() == psc,remove);
+    public List<Mail> filterByPsc(int psc, boolean remove, boolean include){
+        return filter((m) -> m.getPSC() == psc && include,remove);
+    }
+
+    public List<Mail> filterByDistrict(int districtId, boolean remove, boolean include){
+        return filter((m) -> m.getDeliveryAddress().getDistrictId() == districtId && include,remove);
+    }
+
+    public List<Mail> filterByRegion(int regionId, boolean remove, boolean include){
+        return filter((m) -> m.getDeliveryAddress().getRegionId() == regionId && include,remove);
     }
 
     /**

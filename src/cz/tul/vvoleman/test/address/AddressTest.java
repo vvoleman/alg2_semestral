@@ -12,7 +12,6 @@ class AddressTest {
     private Address address;
 
     @BeforeEach
-    @Disabled
     public void setUp(){
         address = new Address(
                 17901448,
@@ -21,8 +20,8 @@ class AddressTest {
                 2,
                 40003,
                 "Ústí nad Labem",
-                "Ústí nad Labem"
-        );
+                3510, "Ústí nad Labem",
+                60, "Ústecký kraj");
     }
 
     @org.junit.jupiter.api.Test
