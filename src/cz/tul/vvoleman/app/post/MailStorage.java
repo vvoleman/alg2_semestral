@@ -1,5 +1,7 @@
 package cz.tul.vvoleman.app.post;
 
+import cz.tul.vvoleman.app.post.mail.Mail;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -25,11 +27,11 @@ public class MailStorage {
     }
 
     public List<Mail> filterByDistrict(int districtId, boolean remove, boolean include){
-        return filter((m) -> m.getDeliveryAddress().getDistrictId() == districtId && include,remove);
+        return filter((m) -> m.getReceiverAddress().getDistrictId() == districtId && include,remove);
     }
 
     public List<Mail> filterByRegion(int regionId, boolean remove, boolean include){
-        return filter((m) -> m.getDeliveryAddress().getRegionId() == regionId && include,remove);
+        return filter((m) -> m.getReceiverAddress().getRegionId() == regionId && include,remove);
     }
 
     /**

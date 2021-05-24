@@ -54,8 +54,6 @@ public class Login extends Section {
             System.out.println("Omlouváme se, ale nelze ověřit údaje. Zkuste to prosím později!");
             return true;
         }
-
-        new AboutApp(sc).run();
         return true;
     }
 }

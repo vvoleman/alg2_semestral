@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Datastore {
 
-    private final static Storage storageUsed = Storage.File;
+    private final static Storage storageUsed = Storage.Database;
     private static StorageContainer sc;
 
     //////////////////////////////////////////////////////////////

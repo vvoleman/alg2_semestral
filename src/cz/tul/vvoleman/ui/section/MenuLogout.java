@@ -44,7 +44,6 @@ public class MenuLogout extends Section {
                 s = new AboutApp(sc);
                 break;
             case 5:
-                System.out.println("Nashledanou!");
                 return false;
         }
 

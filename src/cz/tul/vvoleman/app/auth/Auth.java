@@ -62,6 +62,14 @@ public class Auth {
         return null;
     }
 
+    public static User getUser(int id) throws StorageException, UnknownUserException {
+        try{
+            return getStorage().get(id);
+        }catch (AuthException e){
+            throw new StorageException(e.getMessage());
+        }
+    }
+
     /**
      * Logs out a user
      */

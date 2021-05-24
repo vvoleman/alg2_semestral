@@ -28,6 +28,15 @@ public class PostOffice{
         mailStorage.add(mailTransport);
     }
 
+    //Všechno mimo naší psč
+    public void outgoingTransport(){
+        PostLibrary.getCenterWarehouse().incomingTransport(new MailTransport(mailStorage.filterByPsc(psc,true,false)));
+    }
+
+    public int numberOfOutgoing(){
+        return mailStorage.filterByPsc(psc,false,false).size();
+    }
+
 
     public int getPsc() {
         return psc;

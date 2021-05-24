@@ -120,7 +120,7 @@ public class Register extends Section {
         boolean isOk = false;
         String line;
         do{
-            System.out.print("Zadejte adresu svého bydliště: ");
+            System.out.println("Zadejte adresu svého bydliště: ");
             try {
                 line = sc.nextLine();
                 a = AddressLibrary.getAddressByInput(line);

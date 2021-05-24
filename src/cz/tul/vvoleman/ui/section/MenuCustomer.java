@@ -36,7 +36,7 @@ public class MenuCustomer extends Section {
             case 2:
                 s = new Login(sc);
                 break;
-            case 5:
+            case 3:
                 Auth.logout();
                 return true;
         }

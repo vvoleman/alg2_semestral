@@ -1,5 +1,7 @@
 package cz.tul.vvoleman.app.post;
 
+import cz.tul.vvoleman.app.post.mail.Mail;
+
 import java.util.List;
 
 public class MailTransport {
