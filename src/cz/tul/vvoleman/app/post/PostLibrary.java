@@ -6,6 +6,7 @@ import cz.tul.vvoleman.app.post.mail.MailContainer;
 import cz.tul.vvoleman.app.post.mail.Package;
 import cz.tul.vvoleman.app.post.storage.PostStoreInterface;
 import cz.tul.vvoleman.utils.exception.post.PostException;
+import cz.tul.vvoleman.utils.exception.storage.StorageException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,17 @@ public class PostLibrary {
         return centrum;
     }
 
+    public static Mail create(MailContainer mc) throws StorageException {
+        return store.create(mc);
+    }
+
+    public static void changeMailStatus(Mail m) throws StorageException {
+        store.changeMailStatus(m);
+    }
+
+    public static void changeMailStatus(Mail m, int officeId) throws StorageException {
+        store.changeMailStatus(m,officeId);
+    }
 
     public static Mail initializeMail(MailContainer mc) throws PostException {
         if(!mc.isReady())  throw new IllegalArgumentException("MailContainer is not ready!");

@@ -11,6 +11,7 @@ public class MailContainer {
     public Address receiverAddress;
     public String receiverName;
     public String type;
+    public int officeId;
     public String info;
 
     public MailContainer(Status status, User sender, Address receiverAddress, String receiverName, String type, String info) {

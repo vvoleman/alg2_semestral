@@ -65,4 +65,26 @@ public class DatabasePostStore implements PostStoreInterface{
             throw new StorageException("Unable to create new mail! "+e.getMessage());
         }
     }
+
+    public void changeMailStatus(Mail m,int officeId) throws StorageException {
+        String query = "UPDATE mails SET status = ?";
+        if(officeId >= 0){
+            query+=", location_id = ?";
+        }
+        query += "WHERE id = ?";
+        try{
+            PreparedStatement ps = db.prepareStatement(query);
+            ps.setString(1,m.getStatus().toString());
+            ps.setInt(2,m.getId());
+
+            ResultSet rs = ps.executeQuery();
+            ps.executeUpdate();
+        }catch (SQLException e){
+            throw new StorageException(String.format("Unable to update mail status! (id=?,status=?)",m.getId(),m.getStatus().toString()));
+        }
+    }
+
+    public void changeMailStatus(Mail m) throws StorageException {
+        changeMailStatus(m,-1);
+    }
 }

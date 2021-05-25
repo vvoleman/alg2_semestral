@@ -16,6 +16,10 @@ public interface PostStoreInterface {
 
     public Mail create(MailContainer mc) throws StorageException;
 
+    public void changeMailStatus(Mail m) throws StorageException;
+
+    public void changeMailStatus(Mail m,int officeId) throws StorageException;
+
     //public PostOffice getByDistrict(int districtId);
 
 }
