@@ -14,6 +14,10 @@ public class MailStorage {
         mails = new ArrayList<>();
     }
 
+    public MailStorage(List<Mail> mails){
+        this.mails = mails;
+    }
+
     public void add(Mail mail){
         mails.add(mail);
     }
@@ -23,15 +27,15 @@ public class MailStorage {
     }
 
     public List<Mail> filterByPsc(int psc, boolean remove, boolean include){
-        return filter((m) -> m.getPSC() == psc && include,remove);
+        return filter((m) -> m.getPSC() == psc == include,remove);
     }
 
     public List<Mail> filterByDistrict(int districtId, boolean remove, boolean include){
-        return filter((m) -> m.getReceiverAddress().getDistrictId() == districtId && include,remove);
+        return filter((m) -> m.getReceiverAddress().getDistrictId() == districtId == include,remove);
     }
 
     public List<Mail> filterByRegion(int regionId, boolean remove, boolean include){
-        return filter((m) -> m.getReceiverAddress().getRegionId() == regionId && include,remove);
+        return filter((m) -> m.getReceiverAddress().getRegionId() == regionId == include,remove);
     }
 
     /**

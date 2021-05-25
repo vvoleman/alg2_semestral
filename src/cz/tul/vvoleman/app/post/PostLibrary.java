@@ -2,9 +2,7 @@ package cz.tul.vvoleman.app.post;
 
 import cz.tul.vvoleman.app.auth.Auth;
 import cz.tul.vvoleman.app.auth.storage.AuthStoreInterface;
-import cz.tul.vvoleman.app.post.mail.Letter;
-import cz.tul.vvoleman.app.post.mail.Mail;
-import cz.tul.vvoleman.app.post.mail.MailContainer;
+import cz.tul.vvoleman.app.post.mail.*;
 import cz.tul.vvoleman.app.post.mail.Package;
 import cz.tul.vvoleman.app.post.storage.PostStoreInterface;
 import cz.tul.vvoleman.resource.Datastore;
@@ -12,6 +10,7 @@ import cz.tul.vvoleman.utils.exception.post.PostException;
 import cz.tul.vvoleman.utils.exception.storage.StorageException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PostLibrary {
@@ -45,11 +44,11 @@ public class PostLibrary {
         return getStorage().getMailByTextId(id);
     }
 
-    public static PostOffice getOfficeByPSC(int districtID) throws StorageException {
-        if(!offices.containsKey(districtID)){
-            offices.put(districtID,getStorage().getOfficeByPSC(districtID));
+    public static PostOffice getOfficeByPSC(int psc) throws StorageException, PostException {
+        if(!offices.containsKey(psc)){
+            offices.put(psc,getStorage().getOfficeByPSC(psc));
         }
-        return offices.get(districtID);
+        return offices.get(psc);
     }
 
     public static Warehouse getCenterWarehouse(){
@@ -62,6 +61,10 @@ public class PostLibrary {
 
     public static void changeMailStatus(Mail m) throws StorageException {
         getStorage().changeMailStatus(m);
+    }
+
+    public static void changeMailStatus(Status s, List<Integer> ids, int locationId) throws StorageException {
+        getStorage().changeMailStatus(s,ids,locationId);
     }
 
     public static void changeMailStatus(Mail m, int officeId) throws StorageException {
@@ -82,6 +85,10 @@ public class PostLibrary {
                 );
         }
         throw new PostException("Invalid mail type!");
+    }
+
+    public static List<Mail> filterMails(int userId, int psc) throws StorageException {
+        return getStorage().getMailsWithFilter(userId,psc);
     }
 
 }

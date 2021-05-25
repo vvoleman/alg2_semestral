@@ -23,6 +23,10 @@ public abstract class Mail {
         this.locationId = locationId;
     }
 
+    public int getSenderId(){
+        return sender.getId();
+    }
+
     public Address getSenderAddress() {
         return sender.getAddress();
     }

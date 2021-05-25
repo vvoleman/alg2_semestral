@@ -3,6 +3,7 @@ package cz.tul.vvoleman.test;
 import cz.tul.vvoleman.app.address.AddressLibrary;
 import cz.tul.vvoleman.app.auth.Auth;
 import cz.tul.vvoleman.app.post.PostLibrary;
+import cz.tul.vvoleman.app.post.PostOffice;
 import cz.tul.vvoleman.app.post.mail.Mail;
 import cz.tul.vvoleman.app.post.mail.MailContainer;
 import cz.tul.vvoleman.app.post.mail.Package;
@@ -10,6 +11,7 @@ import cz.tul.vvoleman.app.post.mail.Status;
 import cz.tul.vvoleman.app.post.storage.DatabasePostStore;
 import cz.tul.vvoleman.utils.exception.address.BadAddressFormatException;
 import cz.tul.vvoleman.utils.exception.auth.UnknownUserException;
+import cz.tul.vvoleman.utils.exception.post.PostException;
 import cz.tul.vvoleman.utils.exception.storage.StorageException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +41,13 @@ class PostLibraryTest {
         DatabasePostStore store = new DatabasePostStore();
         Mail m = store.create(mc);
         assertEquals(m.getReceiverName(),mc.receiverName);
+    }
 
+    @Test
+    @DisplayName("Test persistentní pošty")
+    public void getPostOffice() throws StorageException, PostException {
+        PostOffice po = PostLibrary.getOfficeByPSC(40003);
+
+        assertEquals(1,po.numberOfOutgoing());
     }
 }

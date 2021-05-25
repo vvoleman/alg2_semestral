@@ -16,18 +16,19 @@ public class PostOffice{
 
     private MailStorage mailStorage;
 
-    public PostOffice(int psc, int id, Address address){
+    public PostOffice(int id, int psc, Address address) throws StorageException {
         this.psc = psc;
         this.id = id;
         this.address = address;
 
-        mailStorage = new MailStorage();
+        mailStorage = new MailStorage(PostLibrary.filterMails(-1,psc));
     }
 
     public void incomingPersonalMail(Mail mail) throws StorageException {
-        mailStorage.add(mail);
         mail.setStatus((mail.getPSC() == psc) ? Status.ReceiverOffice : Status.SenderOffice);
-        PostLibrary.changeMailStatus(mail);
+        PostLibrary.changeMailStatus(mail,id);
+
+        mailStorage.add(mail);
     }
 
     /**
@@ -45,7 +46,7 @@ public class PostOffice{
     }
 
     //Všechno mimo naší psč
-    public void outgoingTransport(){
+    public void outgoingTransport() throws StorageException {
         PostLibrary.getCenterWarehouse().incomingTransport(new MailTransport(mailStorage.filterByPsc(psc,true,false)));
     }
 
