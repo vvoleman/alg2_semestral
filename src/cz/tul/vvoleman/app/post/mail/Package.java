@@ -13,14 +13,14 @@ public class Package extends Mail{
 
     private final Type packageType;
 
-    public Package(int id, Status status, User sender, Address receiverAddress, String receiverName, Type packageType) {
-        super(id, status, sender, receiverAddress, receiverName);
+    public Package(int id, Status status, User sender, Address receiverAddress, String receiverName, Type packageType, int locationId) {
+        super(id, status, sender, receiverAddress, receiverName,locationId);
         this.packageType = packageType;
     }
 
     @Override
     public String getTextId() {
-        return String.format("CZ%s%s%10d",packageType.suffix,suffix,id);
+        return String.format("CZ%s%s%010d",packageType.suffix,suffix,id);
     }
 
     public Type getType(){

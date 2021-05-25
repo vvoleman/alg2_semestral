@@ -10,14 +10,14 @@ public class Letter extends Mail{
 
     private final Letter.Type letterType;
 
-    public Letter(int id, Status status, User sender, Address receiverAddress, String receiverName, Type letterType) {
-        super(id, status, sender, receiverAddress, receiverName);
+    public Letter(int id, Status status, User sender, Address receiverAddress, String receiverName, Type letterType,int locationId) {
+        super(id, status, sender, receiverAddress, receiverName,locationId);
         this.letterType = letterType;
     }
 
     @Override
     public String getTextId() {
-        return String.format("CZ%s%s%10d",letterType.suffix,suffix,id);
+        return String.format("CZ%s%s%010d",letterType.suffix,suffix,id);
     }
 
     public Type getType(){

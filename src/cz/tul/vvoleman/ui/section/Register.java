@@ -37,7 +37,8 @@ public class Register extends Section {
         uc.firstName = getString("jméno",2,32);
         uc.lastName = getString("příjmení",2,32);
         uc.password = getPassword();
-        uc.address = getAddress();
+        sc.nextLine();
+        uc.address = Register.getAddress("Zadejte prosím své bydliště: ",sc);
         if(uc.address == null){
             return true;
         }
@@ -115,12 +116,12 @@ public class Register extends Section {
         return password;
     }
 
-    private Address getAddress(){
+    static Address getAddress(String question, Scanner sc){
         Address a = null;
         boolean isOk = false;
         String line;
         do{
-            System.out.println("Zadejte adresu svého bydliště: ");
+            System.out.println(question);
             try {
                 line = sc.nextLine();
                 a = AddressLibrary.getAddressByInput(line);

@@ -34,7 +34,7 @@ public class MenuCustomer extends Section {
                 s = new AboutApp(sc);
                 break;
             case 2:
-                s = new Login(sc);
+                s = new MailRegister(sc);
                 break;
             case 3:
                 Auth.logout();

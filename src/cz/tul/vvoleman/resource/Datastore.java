@@ -2,6 +2,7 @@ package cz.tul.vvoleman.resource;
 
 import cz.tul.vvoleman.app.auth.storage.DatabaseAuthStorage;
 import cz.tul.vvoleman.app.auth.storage.FileAuthStorage;
+import cz.tul.vvoleman.app.post.storage.DatabasePostStore;
 import cz.tul.vvoleman.io.Storage;
 import cz.tul.vvoleman.io.StorageContainer;
 import cz.tul.vvoleman.utils.exception.storage.StorageException;
@@ -75,10 +76,10 @@ public class Datastore {
         if (sc == null) {
             switch (storageUsed) {
                 case Database:
-                    sc = new StorageContainer(new DatabaseAuthStorage());
+                    sc = new StorageContainer(new DatabaseAuthStorage(),new DatabasePostStore());
                     break;
                 default:
-                    sc = new StorageContainer(new FileAuthStorage());
+                    //sc = new StorageContainer(new FileAuthStorage());
                     break;
             }
 

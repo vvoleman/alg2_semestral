@@ -14,6 +14,8 @@ public class MailContainer {
     public int officeId;
     public String info;
 
+    public MailContainer(){}
+
     public MailContainer(Status status, User sender, Address receiverAddress, String receiverName, String type, String info) {
         this.status = status;
         this.sender = sender;

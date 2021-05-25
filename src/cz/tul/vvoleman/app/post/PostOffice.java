@@ -2,6 +2,7 @@ package cz.tul.vvoleman.app.post;
 
 import cz.tul.vvoleman.app.address.Address;
 import cz.tul.vvoleman.app.post.mail.Mail;
+import cz.tul.vvoleman.app.post.mail.Status;
 import cz.tul.vvoleman.utils.exception.storage.StorageException;
 
 import java.util.List;
@@ -23,9 +24,10 @@ public class PostOffice{
         mailStorage = new MailStorage();
     }
 
-    public void incomingPersonalMail(Mail mail){
+    public void incomingPersonalMail(Mail mail) throws StorageException {
         mailStorage.add(mail);
-        //Změnit stav na senderOffice
+        mail.setStatus((mail.getPSC() == psc) ? Status.ReceiverOffice : Status.SenderOffice);
+        PostLibrary.changeMailStatus(mail);
     }
 
     /**

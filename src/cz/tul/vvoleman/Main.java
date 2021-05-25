@@ -8,7 +8,9 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        Section s = new Bootstrap(new Scanner(System.in));
+        Scanner sc = new Scanner(System.in);
+        sc.useDelimiter("\n");
+        Section s = new Bootstrap(sc);
 
         s.run();
     }
