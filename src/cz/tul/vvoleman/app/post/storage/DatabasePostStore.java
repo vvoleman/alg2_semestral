@@ -14,11 +14,15 @@ import cz.tul.vvoleman.utils.exception.post.PostException;
 import cz.tul.vvoleman.utils.exception.storage.StorageException;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabasePostStore implements PostStoreInterface {
 
+    /**
+     * Database connection
+     */
     private Connection db;
 
     /**
@@ -43,30 +47,39 @@ public class DatabasePostStore implements PostStoreInterface {
     @Override
     public PostOffice getOfficeByPSC(int psc) throws StorageException, PostException {
         String query = "SELECT id,psc,address_id FROM post_offices WHERE psc = ?";
-        try{
+        try {
             PreparedStatement ps = db.prepareStatement(query);
-            ps.setInt(1,psc);
+            ps.setInt(1, psc);
 
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
-                return new PostOffice(
+            if (rs.next()) {
+                PostOffice po = new PostOffice(
                         rs.getInt(1),
                         rs.getInt(2),
-                        AddressLibrary.getAddressById(rs.getInt(3))
-                );
+                        AddressLibrary.getAddressById(rs.getInt(3)));
+                po.addListToStorage(getMailsWithFilter(-1, psc, null));
+                return po;
             }
             throw new PostException("There was no post with this PSC!");
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new StorageException("Unable to access PSC!");
         }
     }
 
+    /**
+     * Creates Mail with MailContainer
+     *
+     * @param mc MailContainer
+     * @return Mail
+     * @throws StorageException Can't access storage
+     */
     @Override
     public Mail create(MailContainer mc) throws StorageException {
-        String query = "INSERT INTO mails (sender_id,receiver_address_id,receiver_name,status,type,info) " +
-                "VALUES (?,?,?,?,?,?)";
+        String query = "INSERT INTO mails (sender_id,receiver_address_id,receiver_name,status,type,info,last_changed_at) " +
+                "VALUES (?,?,?,?,?,?,?)";
 
         try {
+            mc.lastChangedAt = LocalDateTime.now();
             PreparedStatement ps = db.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, mc.sender.getId());
             ps.setInt(2, mc.receiverAddress.getId());
@@ -74,6 +87,7 @@ public class DatabasePostStore implements PostStoreInterface {
             ps.setString(4, mc.status.toString());
             ps.setString(5, mc.type);
             ps.setString(6, mc.info);
+            ps.setTimestamp(7, Timestamp.valueOf(mc.lastChangedAt));
 
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
@@ -91,20 +105,12 @@ public class DatabasePostStore implements PostStoreInterface {
         }
     }
 
-    private void setTextCode(int id, String textId) throws StorageException {
-        String query = "UPDATE mails SET text_id = ? WHERE id = ?";
-
-        try {
-            PreparedStatement ps = db.prepareStatement(query);
-            ps.setString(1, textId);
-            ps.setInt(2, id);
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new StorageException("Unable to update textCode!");
-        }
-    }
-
+    /**
+     * Changes mail status and location of mail
+     * @param m Mail
+     * @param officeId ID of PostOffice
+     * @throws StorageException Can't access storage
+     */
     public void changeMailStatus(Mail m, int officeId) throws StorageException {
         String query = "UPDATE mails SET status = ?";
         ArrayList<Integer> list = new ArrayList<>();
@@ -120,7 +126,7 @@ public class DatabasePostStore implements PostStoreInterface {
             PreparedStatement ps = db.prepareStatement(query);
             ps.setString(1, m.getStatus().toString());
             for (int i = 0; i < list.size(); i++) {
-                ps.setInt(i+2,list.get(i));
+                ps.setInt(i + 2, list.get(i));
             }
 
             ResultSet rs = ps.executeQuery();
@@ -130,33 +136,53 @@ public class DatabasePostStore implements PostStoreInterface {
         }
     }
 
+    /**
+     * Changes mail status
+     * @param m Mail
+     * @throws StorageException Can't access storage
+     */
     public void changeMailStatus(Mail m) throws StorageException {
         changeMailStatus(m, -1);
     }
 
-    public void changeMailStatus(Status s, List<Integer> ids,int officeId) throws StorageException {
+    /**
+     * Changes statuses and locations of mails
+     * @param s Status
+     * @param ids List of IDs to change
+     * @param officeId PostOffice ID
+     * @throws StorageException Can't access storage
+     */
+    public void changeMailStatus(Status s, List<Integer> ids, int officeId) throws StorageException {
         String query = "UPDATE mails SET status = ?, location_id = ";
         boolean condition = officeId >= 0;
-        if(condition){
+        if (condition) {
             query += "?";
-        }else{
+        } else {
             query += "null";
         }
-        query += " WHERE id IN "+makeWhereIn(ids);
+        query += " WHERE id IN " + makeWhereIn(ids);
         try {
             PreparedStatement ps = db.prepareStatement(query);
             ps.setString(1, s.toString());
-            if(condition){
-                ps.setInt(2,officeId);
+            if (condition) {
+                ps.setInt(2, officeId);
             }
 
             ResultSet rs = ps.executeQuery();
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new StorageException(String.format("Unable to update mails status! (status=%s)",s.toString()));
+            throw new StorageException(String.format("Unable to update mails status! (status=%s)", s.toString()));
         }
     }
 
+    /**
+     * Returns mails with filter
+     * @param userId ID of user (-1 for not filtering by)
+     * @param psc PSC (-1 for not filtering by)
+     * @param status Status (null for not filtering by)
+     * @return List of mails
+     * @throws StorageException Can't access storage
+     */
     @Override
     public List<Mail> getMailsWithFilter(int userId, int psc, Status status) throws StorageException {
         String query = getMailQuery();
@@ -191,8 +217,8 @@ public class DatabasePostStore implements PostStoreInterface {
             for (int i = 0; i < params.size(); i++) {
                 ps.setInt(i + 1, params.get(i));
             }
-            if(bStatus){
-                ps.setString(params.size()+1,status.toString());
+            if (bStatus) {
+                ps.setString(params.size() + 1, status.toString());
             }
             ResultSet rs = ps.executeQuery();
             List<Mail> result = new ArrayList<>();
@@ -207,6 +233,13 @@ public class DatabasePostStore implements PostStoreInterface {
         }
     }
 
+    /**
+     * Returns mail by with specified textID
+     * @param textId TextID
+     * @return Mail
+     * @throws StorageException Can't access storage
+     * @throws PostException No mail with this textID
+     */
     @Override
     public Mail getMailByTextId(String textId) throws StorageException, PostException {
         String query = getMailQuery() + " WHERE text_id = ?";
@@ -224,6 +257,17 @@ public class DatabasePostStore implements PostStoreInterface {
         throw new PostException("Unknown mail with textId=" + textId);
     }
 
+    /////////////////////////////////////////////////////////
+
+    /**
+     * Returns mail from ResultSet
+     * @param rs ResultSet
+     * @return Mail
+     * @throws SQLException Problem with DB
+     * @throws UnknownUserException Unknown user
+     * @throws StorageException Can't access storage
+     * @throws PostException Invalid mail type
+     */
     private Mail getMailFromResult(ResultSet rs) throws SQLException, UnknownUserException, StorageException, PostException {
         MailContainer mc = new MailContainer(
                 rs.getInt(1),
@@ -239,18 +283,47 @@ public class DatabasePostStore implements PostStoreInterface {
         return PostLibrary.initializeMail(mc);
     }
 
+    /**
+     * Returns base of mail query
+     * @return Mail query
+     */
     private String getMailQuery() {
         return "SELECT mails.id as id,status,sender_id,receiver_address_id,receiver_name,type,info,location_id FROM mails";
     }
 
-    private String makeWhereIn(List<Integer> ids){
+    /**
+     * Creates string that simulates WHERE IN
+     * @param ids IDs
+     * @return String
+     */
+    private String makeWhereIn(List<Integer> ids) {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < ids.size(); i++) {
             s.append(ids.get(i));
-            if(i < ids.size()-1){
+            if (i < ids.size() - 1) {
                 s.append(",");
             }
         }
-        return "("+s.toString()+")";
+        return "(" + s.toString() + ")";
+    }
+
+    /**
+     * Sets textID for mail with specified ID
+     * @param id Mail ID
+     * @param textId TextID
+     * @throws StorageException Can't access storage
+     */
+    private void setTextCode(int id, String textId) throws StorageException {
+        String query = "UPDATE mails SET text_id = ? WHERE id = ?";
+
+        try {
+            PreparedStatement ps = db.prepareStatement(query);
+            ps.setString(1, textId);
+            ps.setInt(2, id);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new StorageException("Unable to update textCode!");
+        }
     }
 }

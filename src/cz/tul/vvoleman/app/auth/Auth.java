@@ -62,6 +62,13 @@ public class Auth {
         return null;
     }
 
+    /**
+     * Returns user with specified ID
+     * @param id User ID
+     * @return User
+     * @throws StorageException Can't access storage
+     * @throws UnknownUserException User not found
+     */
     public static User getUser(int id) throws StorageException, UnknownUserException {
         try{
             return getStorage().get(id);
@@ -77,6 +84,13 @@ public class Auth {
         loggedIn = null;
     }
 
+    /**
+     * Logs in user
+     * @param email Email
+     * @param password unhashed password
+     * @return true if logged in
+     * @throws StorageException Can't access storage
+     */
     public static boolean login(String email, String password) throws StorageException {
         try{
             loggedIn = getStorage().get(email,password);

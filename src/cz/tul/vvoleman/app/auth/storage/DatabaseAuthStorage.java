@@ -250,10 +250,21 @@ public class DatabaseAuthStorage implements AuthStoreInterface{
 
     ////////////////////////////////////////////////////
 
+    /**
+     * Return base query
+     * @return Query
+     */
     private String getQuery(){
         return "SELECT id,email,first_name,last_name,address_id,created_at,enabled,role FROM users";
     }
 
+    /**
+     * Makes instance of user from ResultSet
+     * @param rs ResultSet
+     * @return User
+     * @throws SQLException Problem with DB
+     * @throws AuthException Problem with initialization of user
+     */
     private User getUserFromResult(ResultSet rs) throws SQLException, AuthException {
         return new User(
                 rs.getInt(1),

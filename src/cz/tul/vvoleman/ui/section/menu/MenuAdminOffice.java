@@ -3,11 +3,13 @@ package cz.tul.vvoleman.ui.section.menu;
 import cz.tul.vvoleman.app.auth.Auth;
 import cz.tul.vvoleman.app.post.PostLibrary;
 import cz.tul.vvoleman.app.post.PostOffice;
+import cz.tul.vvoleman.app.post.tracker.Tracker;
 import cz.tul.vvoleman.ui.Menu;
 import cz.tul.vvoleman.ui.Section;
 import cz.tul.vvoleman.ui.section.AboutApp;
 import cz.tul.vvoleman.ui.section.IncomingPersonalMail;
 import cz.tul.vvoleman.ui.section.Login;
+import cz.tul.vvoleman.ui.section.PostTracker;
 import cz.tul.vvoleman.utils.exception.storage.StorageException;
 
 import java.util.Scanner;
@@ -42,7 +44,7 @@ public class MenuAdminOffice extends Section {
         //TODO: InputMismatch - zjednoti input
         switch (menu.chooseOption()) {
             case 1:
-                s = new AboutApp(sc);
+                s = new PostTracker(sc, PostTracker.Filter.PSC,po.getPsc());
                 break;
             case 2:
                 s = new IncomingPersonalMail(sc);

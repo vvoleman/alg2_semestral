@@ -22,7 +22,19 @@ public class PostOffice implements PostalInterface{
         this.id = id;
         this.address = address;
 
-        mailStorage = new MailStorage(PostLibrary.filterMails(-1,psc));
+        mailStorage = new MailStorage(/*PostLibrary.filterMails(-1,psc)*/);
+    }
+
+    public void addListToStorage(List<Mail> mails){
+        mailStorage.add(mails);
+    }
+
+    public PostOffice(int id, int psc, Address address, List<Mail> mails){
+        this.psc = psc;
+        this.id = id;
+        this.address = address;
+
+        mailStorage = new MailStorage(mails);
     }
 
     public void incomingPersonalMail(Mail mail) throws StorageException {

@@ -50,4 +50,13 @@ class PostLibraryTest {
 
         assertEquals(1,po.numberOfOutgoing());
     }
+
+    @Test
+    @DisplayName("PO podle psč")
+    void byPSC() throws PostException, StorageException {
+        int psc = 27009;
+        PostOffice po = PostLibrary.getOfficeByPSC(psc);
+
+        assertTrue(true);
+    }
 }

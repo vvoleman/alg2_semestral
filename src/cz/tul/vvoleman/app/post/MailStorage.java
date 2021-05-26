@@ -20,6 +20,10 @@ public class MailStorage {
         this.mails = mails;
     }
 
+    public void add(List<Mail> list){
+        mails.addAll(list);
+    }
+
     public void add(Mail mail){
         mails.add(mail);
     }

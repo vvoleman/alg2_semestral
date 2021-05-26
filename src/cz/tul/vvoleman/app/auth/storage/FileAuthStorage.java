@@ -233,6 +233,13 @@ public class FileAuthStorage implements AuthStoreInterface {
         }
     }
 
+    /**
+     * Filters file
+     * @param filter Predicate<String[]> filter
+     * @param limit how many results
+     * @return List of results
+     * @throws StorageException Can't access storage
+     */
     private List<String[]> extendedGet(Predicate<String[]> filter, int limit) throws StorageException {
         List<String[]> data;
 
@@ -246,6 +253,11 @@ public class FileAuthStorage implements AuthStoreInterface {
         return data;
     }
 
+    /**
+     * Returns last ID from file
+     * @return ID
+     * @throws StorageException Can't access storage
+     */
     private int getLastID() throws StorageException {
         try{
             return Integer.parseInt(TextFileReader.readLastLine(f,Datastore.getDelimiter())[0]);

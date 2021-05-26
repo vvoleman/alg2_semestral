@@ -19,6 +19,17 @@ public class TextFileReader {
         return readWithFilter(file,regexSeparator,header,(s) -> true,-1);
     }
 
+    public static List<String> readFileLines(File f) throws IOException {
+        List<String> data = new ArrayList<>();
+        try(BufferedReader br = new BufferedReader(new FileReader(f))){
+            String line;
+            while((line = br.readLine()) != null){
+                data.add(line);
+            }
+        }
+        return data;
+    }
+
     /**
      * Returns lines which meet filter's requirements
      * @param file File
@@ -70,5 +81,31 @@ public class TextFileReader {
 
         return line.split(regexSeparator);
     }
+
+    public static int getIndexOfLine(File f, String regexSeparator,boolean header,Predicate<String[]> filter) throws IOException {
+        int counter = 0;
+        try(BufferedReader br = new BufferedReader(new FileReader(f))){
+            String line;
+
+            //Přeskočí hlavičku
+            if(header) br.readLine();
+
+            //Do té doby, dokuď je možné načíst další řádek
+            while((line = br.readLine()) != null){
+                counter++;
+                //rozdělí řádek podle regulárního výrazu
+                String[] parts = line.split(regexSeparator);
+
+                //Pokud je value null, tak to přiradíme
+                //Pokud se part rovná value, přiřadíme
+                if(parts.length > 1 && filter.test(parts)){
+                    return counter;
+                }
+            }
+        }
+
+        return -1;
+    }
+
 
 }

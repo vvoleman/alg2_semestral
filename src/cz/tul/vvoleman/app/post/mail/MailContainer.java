@@ -3,10 +3,13 @@ package cz.tul.vvoleman.app.post.mail;
 import cz.tul.vvoleman.app.address.Address;
 import cz.tul.vvoleman.app.auth.model.User;
 
+import java.time.LocalDateTime;
+
 public class MailContainer {
 
     public int id = -1;
     public Status status;
+    public LocalDateTime lastChangedAt;
     public User sender;
     public Address receiverAddress;
     public String receiverName;
