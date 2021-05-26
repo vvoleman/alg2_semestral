@@ -1,8 +1,10 @@
 package cz.tul.vvoleman.ui.section;
 
 import cz.tul.vvoleman.app.auth.Auth;
-import cz.tul.vvoleman.ui.Menu;
 import cz.tul.vvoleman.ui.Section;
+import cz.tul.vvoleman.ui.section.menu.MenuAdmin;
+import cz.tul.vvoleman.ui.section.menu.MenuCustomer;
+import cz.tul.vvoleman.ui.section.menu.MenuLogout;
 
 import java.util.Scanner;
 

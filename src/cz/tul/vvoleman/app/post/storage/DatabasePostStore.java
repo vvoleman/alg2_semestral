@@ -114,7 +114,7 @@ public class DatabasePostStore implements PostStoreInterface {
             list.add(officeId);
         }
 
-        query += "WHERE id = ?";
+        query += " WHERE id = ?";
         list.add(m.getId());
         try {
             PreparedStatement ps = db.prepareStatement(query);
@@ -135,40 +135,42 @@ public class DatabasePostStore implements PostStoreInterface {
     }
 
     public void changeMailStatus(Status s, List<Integer> ids,int officeId) throws StorageException {
-        String query = "UPDATE mails SET status = ?";
+        String query = "UPDATE mails SET status = ?, location_id = ";
         boolean condition = officeId >= 0;
-        if (condition) {
-            query += ", location_id = ?";
+        if(condition){
+            query += "?";
+        }else{
+            query += "null";
         }
-        query += "WHERE id IN (?)";
+        query += " WHERE id IN "+makeWhereIn(ids);
         try {
             PreparedStatement ps = db.prepareStatement(query);
             ps.setString(1, s.toString());
             if(condition){
                 ps.setInt(2,officeId);
             }
-            ps.setArray(((condition)?3:2),db.createArrayOf("integer",ids.toArray()));
 
             ResultSet rs = ps.executeQuery();
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new StorageException(String.format("Unable to update mails status! (status=?)",  s.toString()));
+            throw new StorageException(String.format("Unable to update mails status! (status=%s)",s.toString()));
         }
     }
 
     @Override
-    public List<Mail> getMailsWithFilter(int userId, int psc) throws StorageException {
+    public List<Mail> getMailsWithFilter(int userId, int psc, Status status) throws StorageException {
         String query = getMailQuery();
 
         boolean bId = userId > 0;
         boolean bPsc = psc > 0;
+        boolean bStatus = status != null;
 
         if (bPsc) {
             query += " JOIN post_offices po ON po.id = location_id";
         }
 
         ArrayList<Integer> params = new ArrayList<>();
-        if (bId || bPsc) {
+        if (bId || bPsc || bStatus) {
             query += " WHERE";
             if (bId) {
                 query += " sender_id = ?";
@@ -178,6 +180,9 @@ public class DatabasePostStore implements PostStoreInterface {
                 query += ((bId) ? " AND" : "") + " po.psc = ?";
                 params.add(psc);
             }
+            if (bStatus) {
+                query += ((bId) ? " AND" : "") + " status = ?";
+            }
         }
 
         try {
@@ -185,6 +190,9 @@ public class DatabasePostStore implements PostStoreInterface {
 
             for (int i = 0; i < params.size(); i++) {
                 ps.setInt(i + 1, params.get(i));
+            }
+            if(bStatus){
+                ps.setString(params.size()+1,status.toString());
             }
             ResultSet rs = ps.executeQuery();
             List<Mail> result = new ArrayList<>();
@@ -198,8 +206,6 @@ public class DatabasePostStore implements PostStoreInterface {
             throw new StorageException("There was a problem with storage! - " + e.getMessage());
         }
     }
-
-
 
     @Override
     public Mail getMailByTextId(String textId) throws StorageException, PostException {
@@ -235,5 +241,16 @@ public class DatabasePostStore implements PostStoreInterface {
 
     private String getMailQuery() {
         return "SELECT mails.id as id,status,sender_id,receiver_address_id,receiver_name,type,info,location_id FROM mails";
+    }
+
+    private String makeWhereIn(List<Integer> ids){
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < ids.size(); i++) {
+            s.append(ids.get(i));
+            if(i < ids.size()-1){
+                s.append(",");
+            }
+        }
+        return "("+s.toString()+")";
     }
 }

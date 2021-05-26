@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Warehouse{
+public class Warehouse implements PostalInterface{
 
     /**
      * Warehouse content
@@ -17,9 +17,14 @@ public class Warehouse{
     protected MailStorage mailStorage;
 
     public Warehouse(){
-        mailStorage = new MailStorage();
+        try {
+            mailStorage = new MailStorage(PostLibrary.filterMails(Status.Warehouse));
+        } catch (StorageException e) {
+            mailStorage = new MailStorage();
+        }
     }
 
+    @Override
     public void incomingTransport(MailTransport mailTransport) throws StorageException {
         List<Integer> ids = new ArrayList<>();
 
@@ -32,6 +37,15 @@ public class Warehouse{
         mailStorage.add(mailTransport);
     }
 
+    @Override
+    public int numberOfMails() {
+        return mailStorage.numberOfMails();
+    }
+
+    public Map<Integer,List<Mail>> splitMailsByPSC(){
+        return mailStorage.splitByPsc();
+    }
+
     /**
      * Processes outgoing transport
      *
@@ -39,6 +53,10 @@ public class Warehouse{
      */
     public void outgoingTransport(PostOffice target) throws StorageException {
         target.incomingTransport(new MailTransport(mailStorage.filterByPsc(target.getPsc(),true,true)));
+    }
+
+    public List<Mail> getMailList(){
+        return mailStorage.getMails();
     }
 
 }

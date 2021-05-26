@@ -3,7 +3,9 @@ package cz.tul.vvoleman.app.post;
 import cz.tul.vvoleman.app.post.mail.Mail;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 public class MailStorage {
@@ -26,6 +28,10 @@ public class MailStorage {
         mails.addAll(mailTransport.getMails());
     }
 
+    public int numberOfMails(){
+        return mails.size();
+    }
+
     public List<Mail> filterByPsc(int psc, boolean remove, boolean include){
         return filter((m) -> m.getPSC() == psc == include,remove);
     }
@@ -36,6 +42,18 @@ public class MailStorage {
 
     public List<Mail> filterByRegion(int regionId, boolean remove, boolean include){
         return filter((m) -> m.getReceiverAddress().getRegionId() == regionId == include,remove);
+    }
+
+    public Map<Integer,List<Mail>> splitByPsc(){
+        HashMap<Integer,List<Mail>> splitted = new HashMap<>();
+        for (Mail m:mails) {
+            if(!splitted.containsKey(m.getPSC())){
+                ArrayList<Mail> list = new ArrayList<>();
+                splitted.put(m.getPSC(),list);
+            }
+            splitted.get(m.getPSC()).add(m);
+        }
+        return splitted;
     }
 
     /**
@@ -58,5 +76,9 @@ public class MailStorage {
         }
 
         return out;
+    }
+
+    public List<Mail> getMails(){
+        return mails;
     }
 }

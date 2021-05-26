@@ -1,7 +1,11 @@
-package cz.tul.vvoleman.ui.section;
+package cz.tul.vvoleman.ui.section.menu;
 
 import cz.tul.vvoleman.ui.Menu;
 import cz.tul.vvoleman.ui.Section;
+import cz.tul.vvoleman.ui.section.AboutApp;
+import cz.tul.vvoleman.ui.section.Login;
+import cz.tul.vvoleman.ui.section.PostTracker;
+import cz.tul.vvoleman.ui.section.Register;
 
 import java.util.Scanner;
 
@@ -32,7 +36,7 @@ public class MenuLogout extends Section {
         menu.drawMenuUI();
         switch (menu.chooseOption()) {
             case 1:
-                s = new AboutApp(sc);
+                s = new PostTracker(sc);
                 break;
             case 2:
                 s = new Login(sc);

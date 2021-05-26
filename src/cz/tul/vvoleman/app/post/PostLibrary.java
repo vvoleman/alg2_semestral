@@ -15,6 +15,9 @@ import java.util.Map;
 
 public class PostLibrary {
 
+    //Selected WorkStation
+    private static PostalInterface workstation;
+
     private PostStoreInterface ps;
 
     private static PostLibrary instance;
@@ -32,6 +35,20 @@ public class PostLibrary {
             instance = new PostLibrary();
         }
         return instance.getPostStore();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    public static boolean hasWorkstation(){
+        return workstation != null;
+    }
+
+    public static void setWorkstation(PostalInterface pi){
+        workstation = pi;
+    }
+
+    public static PostalInterface getWorkstation(){
+        return workstation;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -88,7 +105,15 @@ public class PostLibrary {
     }
 
     public static List<Mail> filterMails(int userId, int psc) throws StorageException {
-        return getStorage().getMailsWithFilter(userId,psc);
+        return getStorage().getMailsWithFilter(userId,psc,null);
+    }
+
+    public static List<Mail> filterMails(int userId, int psc, Status s) throws StorageException {
+        return getStorage().getMailsWithFilter(userId,psc,s);
+    }
+
+    public static List<Mail> filterMails(Status s) throws StorageException {
+        return getStorage().getMailsWithFilter(-1,-1,s);
     }
 
 }
