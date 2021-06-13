@@ -133,8 +133,8 @@ class AuthTest {
   }
 }
 ```
-- JUnit poskytuje mnoho typu testu, testy se volají metodou assertXXX - např: assertEquals, assertTrue, assertNotNull
-- Každá testovací metoda musí být opatřena anotací "@Test", můžeme uvést i název testu pomocí "@DisplayName(...)"
+- JUnit poskytuje mnoho typu testu, testy se volají metodou assertXXX - např: `assertEquals`, `assertTrue`, `assertNotNull`
+- Každá testovací metoda musí být opatřena anotací `@Test`, můžeme uvést i název testu pomocí `@DisplayName(...)`
 
 - První test nám kontroluje hashování hesel
 - Druhý test zkouší funkčnost přihlašování
