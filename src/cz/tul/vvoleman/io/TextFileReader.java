@@ -19,6 +19,12 @@ public class TextFileReader {
         return readWithFilter(file,regexSeparator,header,(s) -> true,-1);
     }
 
+    /**
+     * Reads all lines from file
+     * @param f File
+     * @return List of lines
+     * @throws IOException Problem with file
+     */
     public static List<String> readFileLines(File f) throws IOException {
         List<String> data = new ArrayList<>();
         try(BufferedReader br = new BufferedReader(new FileReader(f))){
@@ -70,6 +76,13 @@ public class TextFileReader {
         return data;
     }
 
+    /**
+     * Reads last line from file
+     * @param file File
+     * @param regexSeparator Separator
+     * @return parts
+     * @throws IOException Problem with file
+     */
     public static String[] readLastLine(File file, String regexSeparator) throws IOException {
         String line = "";
 
@@ -82,6 +95,15 @@ public class TextFileReader {
         return line.split(regexSeparator);
     }
 
+    /**
+     * Returns index of line by filter
+     * @param f File
+     * @param regexSeparator separator
+     * @param header Is there a header?
+     * @param filter Predicat<String[]>
+     * @return index
+     * @throws IOException Problem with file
+     */
     public static int getIndexOfLine(File f, String regexSeparator,boolean header,Predicate<String[]> filter) throws IOException {
         int counter = 0;
         try(BufferedReader br = new BufferedReader(new FileReader(f))){

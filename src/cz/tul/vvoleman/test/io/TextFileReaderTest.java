@@ -2,6 +2,7 @@ package cz.tul.vvoleman.test.io;
 
 import cz.tul.vvoleman.resource.Datastore;
 import cz.tul.vvoleman.io.TextFileReader;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TextFileReaderTest {
 
     @Test
+    @Disabled
     @DisplayName("Kontrola čtení")
     void readFile() throws IOException {
         List<String[]> result = TextFileReader.readFile(
@@ -35,6 +37,7 @@ class TextFileReaderTest {
 
     @Test
     @DisplayName("Kontrola filterů")
+    @Disabled
     void readWithFilter() throws IOException {
         List<Predicate<String[]>> tests = new ArrayList<>();
         tests.add((parts) -> parts[0].equalsIgnoreCase("1"));
@@ -61,6 +64,7 @@ class TextFileReaderTest {
 
     @Test
     @DisplayName("Poslední řádek")
+    @Disabled
     void readLastLine() throws IOException {
         String correct = "2,vvoleman@email.cz,fdst,Vojtěch,Voleman,17901448,2021-05-10 16:20:00,2021-05-10 16:20:00,1,admin";
         assertEquals(correct,TextFileReader.readLastLine(new File(Datastore.getAuthStorageFile()),","),"Kontrola posledního řádku");

@@ -13,6 +13,7 @@ import cz.tul.vvoleman.utils.exception.address.BadAddressFormatException;
 import cz.tul.vvoleman.utils.exception.auth.UnknownUserException;
 import cz.tul.vvoleman.utils.exception.post.PostException;
 import cz.tul.vvoleman.utils.exception.storage.StorageException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -30,6 +31,7 @@ class PostLibraryTest {
 
     @Test
     @DisplayName("Vytvoření zásilky")
+    @Disabled
     void create() throws UnknownUserException, StorageException, SQLException, BadAddressFormatException {
         MailContainer mc = new MailContainer(
                 Status.Registered, Auth.getUser(1),
@@ -44,6 +46,7 @@ class PostLibraryTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Test persistentní pošty")
     public void getPostOffice() throws StorageException, PostException {
         PostOffice po = PostLibrary.getOfficeByPSC(40003);
@@ -53,6 +56,7 @@ class PostLibraryTest {
 
     @Test
     @DisplayName("PO podle psč")
+    @Disabled
     void byPSC() throws PostException, StorageException {
         int psc = 27009;
         PostOffice po = PostLibrary.getOfficeByPSC(psc);

@@ -44,6 +44,7 @@ public class Menu {
                 }
             } catch (InputMismatchException e){
                 System.out.println("Vstup musí být číslo, zkuste to znovu!");
+                sc.nextLine();
             }
         } while(!isOk);
 

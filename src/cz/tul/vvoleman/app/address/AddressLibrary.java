@@ -15,7 +15,7 @@ public class AddressLibrary {
      * Returns Address by ID of building
      * @param id ID of building
      * @return null | Address
-     * @throws SQLException
+     * @throws SQLException something goes wrong
      */
     public static Address getAddressById(int id) throws SQLException {
         return AddressStore.getInstance().getAddressById(id);

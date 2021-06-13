@@ -5,6 +5,7 @@ import cz.tul.vvoleman.io.TextFileReader;
 import cz.tul.vvoleman.io.TextFileWriter;
 import cz.tul.vvoleman.resource.Datastore;
 
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -58,7 +59,7 @@ public class FromDBtoFiles {
             list.add(String.format("%d,%s,%s,%s,%s,%d,%s,%d,%s",
                     rs.getInt(1), rs.getString(2), rs.getString(3),
                     rs.getString(4),rs.getString(5),rs.getInt(6),
-                    rs.getString(7),rs.getInt(8),rs.getString(9)
+                    rs.getTimestamp(7).toLocalDateTime().format(Datastore.getDtf()),rs.getInt(8),rs.getString(9)
                     )
             );
         }

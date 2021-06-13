@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 
 public class Datastore {
 
+    //TODO: Asi rozdělit datastore na podčásti
+
     private final static Storage storageUsed = Storage.Database;
     private static StorageContainer sc;
 
@@ -42,10 +44,6 @@ public class Datastore {
 
     public static DateTimeFormatter getDtf() {
         return dtf;
-    }
-
-    public static String getDataFolder() {
-        return dataFolder;
     }
 
     public static String getFileStorageFolder() {

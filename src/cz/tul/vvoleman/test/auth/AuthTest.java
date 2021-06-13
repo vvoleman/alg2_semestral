@@ -9,6 +9,7 @@ import cz.tul.vvoleman.utils.exception.address.BadAddressFormatException;
 import cz.tul.vvoleman.utils.exception.auth.AuthException;
 import cz.tul.vvoleman.utils.exception.auth.EmailExistsException;
 import cz.tul.vvoleman.utils.exception.storage.StorageException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +34,7 @@ class AuthTest {
 
     @Test
     @DisplayName("Vytvoření nového uživatele")
+    @Disabled
     void create() throws StorageException, SQLException, BadAddressFormatException, EmailExistsException, AuthException {
         UserContainer uc = new UserContainer();
         uc.firstName = "Marco";
