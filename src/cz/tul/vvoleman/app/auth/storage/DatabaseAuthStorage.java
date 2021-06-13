@@ -14,6 +14,7 @@ import cz.tul.vvoleman.utils.exception.storage.StorageException;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseAuthStorage implements AuthStoreInterface{
@@ -120,7 +121,15 @@ public class DatabaseAuthStorage implements AuthStoreInterface{
      */
     @Override
     public List<User> get(int[] ids) throws UnknownUserException, StorageException {
-        return null;
+        List<User> users = new ArrayList<>();
+        for(int i:ids){
+            try {
+                users.add(this.get(i));
+            } catch (AuthException e) {
+                throw new StorageException(e.getMessage());
+            }
+        }
+        return users;
     }
 
     /**
