@@ -76,4 +76,4 @@ představíme strukturu souborů. Soubory jsou uloženy v `data/storage/*.csv` v
 |address_id|int       |ID adresy pošty|
 
 ### 2.3. Diagram
-![Diagram aplikace](https://github.com/vvoleman/alg2_semestral/diagram_app.png)
+![Diagram aplikace](https://raw.githubusercontent.com/vvoleman/alg2_semestral/main/diagram_app.png)
