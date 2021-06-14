@@ -7,6 +7,13 @@
 * Jako externí knihovna byl použit JUnit.
 ## 2. Návrh řešení
 ### 2.1. Funkční specifikace
+#### 2.1.1 Adresy
+
+- V aplikace jsou používána data všech adres v ČR. Data jsou z [RÚIAN](http://vdp.cuzk.cz).
+- Knihovna `AddressLibrary` podporuje získávání adres podle ID nebo podle adresy
+  - Adresa musí být ve formátu `nazevUlice` + `cisloPopisny` (případně ještě `/cisloOrientacni`) + `psc`
+  - Pokud adresa nemá název ulice, tak je taky podporováno `obec` + `cisloPopisny` + `psc`
+#### 2.1.2 Pošta
 Aplikace podporuje 2 typy zásilek, které se dělí na podtypy
 
 **1. Psaní**
